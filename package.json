@@ -1,0 +1,22 @@
+{
+  "name": "backend-bencher",
+  "version": "1.0.0",
+  "description": "backend bencher",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daytimedrinkingclub/backend-bencher.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daytimedrinkingclub/backend-bencher/issues"
+  },
+  "homepage": "https://github.com/daytimedrinkingclub/backend-bencher#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

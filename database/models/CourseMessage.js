@@ -1,5 +1,6 @@
 const {sequelize, Model, DataTypes} = require("../db");
 const CourseGoal = require("./CourseGoal");
+const {CourseMessageTypes, CourseMessageUserTypes} = require("../constants");
 
 class CourseMessage extends Model {
 }
@@ -24,11 +25,11 @@ CourseMessage.init(
       allowNull: false,
     },
     message_type: {
-      type: DataTypes.ENUM("information", "gather_requirement", "quiz", "doubt"),
+      type: DataTypes.ENUM(Object.values(CourseMessageTypes)),
       allowNull: false,
     },
     user_type: {
-      type: DataTypes.ENUM("user", "assistant", "system"),
+      type: DataTypes.ENUM(Object.values(CourseMessageUserTypes)),
       allowNull: false,
     },
     meta: {

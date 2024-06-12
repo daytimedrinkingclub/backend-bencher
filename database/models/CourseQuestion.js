@@ -1,5 +1,6 @@
 const {sequelize, Model, DataTypes} = require("../db");
 const Course = require("./Course");
+const {CourseQuestionInputTypes} = require("../constants");
 
 class CourseQuestion extends Model {
 }
@@ -24,7 +25,7 @@ CourseQuestion.init(
       allowNull: false,
     },
     input_type: {
-      type: DataTypes.ENUM("text", "radio", "checkbox", "scale", "date"),
+      type: DataTypes.ENUM(Object.values(CourseQuestionInputTypes)),
       allowNull: false,
     },
     // https://stackoverflow.com/questions/41280608/sequelize-json-data-type

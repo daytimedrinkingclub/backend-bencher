@@ -1,5 +1,6 @@
-const User = require("./User");
+const User = require("./Student");
 const { sequelize, Model, DataTypes } = require("../db");
+const {Student} = require("./index");
 
 class Course extends Model {}
 
@@ -7,19 +8,27 @@ Course.init(
   {
     id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
     },
-    name: {
-      type: DataTypes.STRING,
+    student_id: {
+      type: DataTypes.UUID,
       allowNull: false,
+      references: {
+        model: Student,
+        key: 'id',
+      },
     },
     description: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    query: {
+    input_query: {
       type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    course_status: {
+      type: DataTypes.STRING(36),
       allowNull: false,
     },
     meta: {
@@ -33,16 +42,8 @@ Course.init(
       },
       defaultValue: {},
     },
-    user_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: User,
-        key: "id",
-      },
-    }
   },
-  { sequelize },
+  { sequelize, modelName: "course" },
 );
 
 module.exports = Course;

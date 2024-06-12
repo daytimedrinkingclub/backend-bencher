@@ -10,7 +10,6 @@ const {
 
 async function sync() {
   try {
-    //	Step 1: Sync models without foreign key dependencies
     await User.sync({ alter: true });
     await Course.sync({ alter: true });
 

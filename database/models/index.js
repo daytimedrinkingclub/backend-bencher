@@ -1,25 +1,79 @@
+const { sequelize, Sequelize } = require("../db");
 const Course = require("./Course");
-const CourseMessage = require("./CourseMessage");
-const CourseGoal = require("./CourseGoal");
-const CourseQuestion = require("./CourseQuestion");
-const User = require("./User");
+const Message = require("./Message");
+const Checkpoint = require("./Checkpoint");
+const Question = require("./Question");
+const Student = require("./Student");
+const Answer = require("./Answer");
+const Content = require("./Content");
+const StudentPlan = require("./StudentPlan");
+const AnswerAnalysis = require("./AnswerAnalysis");
+const CheckpointItem = require("./CheckpointItem");
+const Plan = require("./Plan");
 
-Course.belongsTo(User, {foreignKey: "user_id"});
-User.hasMany(Course, {foreignKey: "user_id"});
+Course.belongsTo(Student, {foreignKey: "student_id"});
+Student.hasMany(Course, {foreignKey: "student_id"});
 
-CourseGoal.belongsTo(Course, {foreignKey: "course_id"});
-Course.hasMany(CourseGoal, {foreignKey: "course_id"});
+Course.hasMany(Checkpoint, {
+  foreignKey: 'parent_id',
+  constraints: false,
+  scope: {
+    parent_type: 'course'
+  }
+});
+Checkpoint.hasMany(Checkpoint, {
+  foreignKey: 'parent_id',
+  constraints: false,
+  scope: {
+    parent_type: 'checkpoint'
+  }
+});
+Checkpoint.hasMany(CheckpointItem, {
+  foreignKey: 'checkpoint_id',
+});
 
-CourseMessage.belongsTo(CourseGoal, {foreignKey: "course_goal_id"});
-CourseGoal.hasMany(CourseMessage, {foreignKey: "course_goal_id"});
+Question.belongsTo(CheckpointItem, {
+  foreignKey: 'entity_id',
+  constraints: false,
+  scope: {
+    entity_type: 'checkpoint'
+  }
+});
 
-CourseQuestion.belongsTo(Course, {foreignKey: "course_id"});
-Course.hasMany(CourseQuestion, {foreignKey: "course_id"});
+Content.belongsTo(CheckpointItem, {
+  foreignKey: 'entity_id',
+  constraints: false,
+  scope: {
+    entity_type: 'checkpoint'
+  }
+});
+
+Answer.belongsTo(Question, {foreignKey: "question_id"});
+Question.hasOne(Answer, {foreignKey: "question_id"});
+
+AnswerAnalysis.belongsTo(Answer, {foreignKey: "answer_id"});
+Answer.hasOne(AnswerAnalysis, {foreignKey: "answer_id"});
+
+Plan.belongsTo(Student, {foreignKey: "student_id"});
+Student.hasOne(Plan, {foreignKey: "student_id"});
+
+Student.hasMany(StudentPlan, { foreignKey: 'student_id' });
+StudentPlan.belongsTo(Student, { foreignKey: 'student_id' });
+
+Plan.hasMany(StudentPlan, { foreignKey: 'plan_id' });
+StudentPlan.belongsTo(Plan, { foreignKey: 'plan_id' });
 
 module.exports = {
   Course,
-  CourseMessage,
-  CourseGoal,
-  CourseQuestion,
-  User,
+  Message,
+  Checkpoint,
+  Question,
+  Student,
+  Plan,
+  Answer,
+  Content,
+  AnswerAnalysis,
+  CheckpointItem,
+  Sequelize,
+  sequelize,
 };

@@ -1,14 +1,13 @@
-const http = require('http');
+const express = require('express');
+// const socketIO = require("socket.io");
+const app = require('./routes');
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/html' });
+const cors = require("cors");
+const http = require("http");
+app.use(cors());
 
-  res.write('<h1>Hello, Node.js HTTP Server!</h1>');
-  res.end();
-});
-
-const port = 3000;
-
-server.listen(port, () => {
-  console.log(`Node.js HTTP server is running on port ${port}`);
-});
+const server = http.createServer(app);
+const PORT = process.env.PORT || 3002;
+server.listen(PORT, async () => {
+  console.log("Backend started at port: " + PORT);
+})

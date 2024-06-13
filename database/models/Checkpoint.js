@@ -1,4 +1,5 @@
 const {sequelize, Model, DataTypes} = require("../db");
+const {CheckpointTypes, CheckpointStatuses} = require("../constants");
 
 class Checkpoint extends Model {
 }
@@ -18,6 +19,11 @@ Checkpoint.init(
       type: DataTypes.UUID,
       allowNull: false,
     },
+    checkpoint_type: {
+      type: DataTypes.ENUM(Object.values(CheckpointTypes)),
+      allowNull: false,
+      defaultValue: CheckpointTypes.REGULAR,
+    },
     checkpoint_details: {
       type: DataTypes.TEXT,
       allowNull: false,
@@ -27,8 +33,9 @@ Checkpoint.init(
       allowNull: false,
     },
     checkpoint_status: {
-      type: DataTypes.STRING(36),
+      type: DataTypes.ENUM(Object.values(CheckpointStatuses)),
       allowNull: false,
+      defaultValue: CheckpointStatuses.LOCKED,
     },
   },
   {sequelize, modelName: 'Checkpoint'},

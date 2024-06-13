@@ -1,5 +1,5 @@
 const {sequelize, Model, DataTypes} = require("../db");
-const {Question} = require("./index");
+const Question = require("./Question");
 
 class Answer extends Model {
 }

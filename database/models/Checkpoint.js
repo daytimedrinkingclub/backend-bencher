@@ -31,7 +31,7 @@ Checkpoint.init(
       allowNull: false,
     },
   },
-  {sequelize, modelName: 'checkpoint'},
+  {sequelize, modelName: 'Checkpoint'},
 );
 
 module.exports = Checkpoint;

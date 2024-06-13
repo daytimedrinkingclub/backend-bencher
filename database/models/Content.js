@@ -1,5 +1,5 @@
 const {sequelize, Model, DataTypes} = require("../db");
-const {CheckpointItem} = require("./index");
+const CheckpointItem = require("./CheckpointItem");
 
 class Content extends Model {
 }

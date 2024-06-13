@@ -2,20 +2,29 @@ const sequelize_fixtures = require("sequelize-fixtures");
 const models = require("./models");
 const {
   Course,
-  CourseMessage,
-  CourseGoal,
-  CourseQuestion,
-  User,
+  Checkpoint,
+  Question,
+  Student,
+  Plan,
+  Answer,
+  Content,
+  AnswerAnalysis,
+  CheckpointItem,
 } = models;
 
 async function sync() {
   try {
-    await User.sync({ alter: true });
+    await Student.sync({ alter: true });
     await Course.sync({ alter: true });
+    await Plan.sync({ alter: true });
 
-    await CourseQuestion.sync({ alter: true });
-    await CourseGoal.sync({ alter: true });
-    await CourseMessage.sync({ alter: true });
+    await Checkpoint.sync({ alter: true });
+    await CheckpointItem.sync({ alter: true });
+    await Question.sync({ alter: true });
+    await Answer.sync({ alter: true });
+    await Content.sync({ alter: true });
+    await AnswerAnalysis.sync({ alter: true });
+
 
     console.log("All models synced successfully!");
   } catch (error) {

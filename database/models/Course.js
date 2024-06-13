@@ -1,6 +1,5 @@
-const User = require("./Student");
 const { sequelize, Model, DataTypes } = require("../db");
-const {Student} = require("./index");
+const Student = require("./Student");
 
 class Course extends Model {}
 
@@ -32,18 +31,11 @@ Course.init(
       allowNull: false,
     },
     meta: {
-      type: DataTypes.TEXT,
+      type: DataTypes.JSON,
       allowNull: true,
-      get: function () {
-        return JSON.parse(this.getDataValue("meta"));
-      },
-      set: function (value) {
-        this.setDataValue("meta", JSON.stringify(value));
-      },
-      defaultValue: {},
     },
   },
-  { sequelize, modelName: "course" },
+  { sequelize, modelName: "Course" },
 );
 
 module.exports = Course;

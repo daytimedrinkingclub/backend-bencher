@@ -18,25 +18,39 @@ Course.hasMany(Checkpoint, {
   foreignKey: 'parent_id',
   constraints: false,
   scope: {
-    parent_type: 'course'
+    parent_type: 'Course'
   }
 });
 Checkpoint.hasMany(Checkpoint, {
   foreignKey: 'parent_id',
   constraints: false,
   scope: {
-    parent_type: 'checkpoint'
+    parent_type: 'Checkpoint'
   }
 });
 Checkpoint.hasMany(CheckpointItem, {
   foreignKey: 'checkpoint_id',
+});
+Checkpoint.belongsTo(Course, {
+  foreignKey: 'parent_id',
+  constraints: false,
+  scope: {
+    parent_type: 'Course'
+  }
+});
+Checkpoint.belongsTo(Checkpoint, {
+  foreignKey: 'parent_id',
+  constraints: false,
+  scope: {
+    parent_type: 'Checkpoint'
+  }
 });
 
 Question.belongsTo(CheckpointItem, {
   foreignKey: 'entity_id',
   constraints: false,
   scope: {
-    entity_type: 'checkpoint'
+    entity_type: 'Checkpoint'
   }
 });
 

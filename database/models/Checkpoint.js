@@ -24,10 +24,10 @@ Checkpoint.init(
       allowNull: false,
       defaultValue: CheckpointTypes.REGULAR,
     },
-    checkpoint_details: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
+    // checkpoint_details: {
+    //   type: DataTypes.TEXT,
+    //   allowNull: false,
+    // },
     checkpoint_number: {
       type: DataTypes.INTEGER,
       allowNull: false,

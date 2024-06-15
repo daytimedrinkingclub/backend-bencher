@@ -9,11 +9,11 @@ Student.init(
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
-    firebase_uid: {
-      type: DataTypes.STRING(100),
-      unique: true,
-      allowNull: false,
-    },
+    // firebase_uid: {
+    //   type: DataTypes.STRING(100),
+    //   unique: true,
+    //   allowNull: false,
+    // },
     email: {
       type: DataTypes.STRING(120),
       unique: false,

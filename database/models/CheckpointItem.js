@@ -29,7 +29,7 @@ CheckpointItem.init(
       allowNull: false,
     },
     entity_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
   },

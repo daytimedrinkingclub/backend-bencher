@@ -11,14 +11,6 @@ Question.init(
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
-    parent_type: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    parent_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
     question: {
       type: DataTypes.TEXT,
       allowNull: false,
@@ -26,6 +18,10 @@ Question.init(
     input_type: {
       type: DataTypes.ENUM(Object.values(CourseQuestionInputTypes)),
       allowNull: false,
+    },
+    meta: {
+      type: DataTypes.JSON,
+      allowNull: true,
     },
   },
   {sequelize},

@@ -3,15 +3,15 @@ const CourseQuestionInputTypes = {
   RADIO: "radio",
   CHECKBOX: "checkbox",
   SCALE: "scale",
-  DATE: "date",
+  DATE: "datetime",
 }
 
 const CheckpointItemTypes = {
-  INFORMATION: "information",
-  QUESTION: "question",
-  ANSWER: "answer",
-  DOUBT: "doubt",
-  NOTES: "notes",
+  CONTENT: "Content",
+  QUESTION: "Question",
+  ANSWER: "Answer",
+  DOUBT: "Doubt",
+  NOTE: "Note",
 }
 
 const CourseMessageUserTypes = {

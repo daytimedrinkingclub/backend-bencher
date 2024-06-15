@@ -8,6 +8,7 @@ class AnthropicLLM {
   }
 
   async ask(messages, tools) {
+    console.log('Getting response for messages: ', messages, tools);
     const response = await this.anthropic.messages.create({
       model: "claude-3-opus-20240229",
       messages: messages,

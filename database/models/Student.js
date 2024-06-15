@@ -19,7 +19,17 @@ Student.init(
       unique: false,
       allowNull: false,
     },
-    name: {
+    password: {
+      type: DataTypes.STRING(120),
+      unique: false,
+      allowNull: true,
+    },
+    first_name: {
+      type: DataTypes.STRING(120),
+      unique: false,
+      allowNull: true,
+    },
+    last_name: {
       type: DataTypes.STRING(120),
       unique: false,
       allowNull: true,

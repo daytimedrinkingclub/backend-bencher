@@ -23,26 +23,26 @@ Answer.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    ai_mcq_answer: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    user_mcq_answer: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    ai_rich_answer: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    user_rich_answer: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    user_answer_data: {
-      type: DataTypes.JSON,
-      allowNull: false,
-    },
+    // ai_mcq_answer: {
+    //   type: DataTypes.TEXT,
+    //   allowNull: false,
+    // },
+    // user_mcq_answer: {
+    //   type: DataTypes.TEXT,
+    //   allowNull: false,
+    // },
+    // ai_rich_answer: {
+    //   type: DataTypes.TEXT,
+    //   allowNull: false,
+    // },
+    // user_rich_answer: {
+    //   type: DataTypes.TEXT,
+    //   allowNull: false,
+    // },
+    // user_answer_data: {
+    //   type: DataTypes.JSON,
+    //   allowNull: false,
+    // },
   },
   {sequelize},
 );

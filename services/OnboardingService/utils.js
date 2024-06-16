@@ -1,4 +1,4 @@
-const { Answer, Checkpoint, Content, Question, CheckpointItem } = require("../../database/models");
+const { Answer, Checkpoint, Content, Question, CheckpointItem, Course} = require("../../database/models");
 const { CheckpointItemTypes } = require("../../database/constants");
 
 const CheckpointItemModelMap = {
@@ -37,8 +37,8 @@ const createCheckpointItem = async (checkpointId, itemType, itemPayload) => {
   return { checkpointItem, entity: item };
 };
 
-const getCheckpointItemEntity = async (checkpointItemId) => {
-  const checkpointItem = await CheckpointItem.findOne({
+const getCheckpointItemEntity = async (checkpointItemId, { checkpointItem: providedCheckpointItem } = {}) => {
+  const checkpointItem = providedCheckpointItem || await CheckpointItem.findOne({
     where: { id: checkpointItemId },
   });
 
@@ -64,10 +64,33 @@ const getCheckpointItemEntity = async (checkpointItemId) => {
 
   return {
     checkpointItem,
-    entity,
+    entity: entity.dataValues,
   };
+};
+
+const getCourseCheckpointItems = async (courseId, checkpointId) => {
+  const course = await Course.findOne({ where: { id: courseId } });
+
+  if (!course) {
+    throw new Error(`Course with ID ${courseId} not found.`);
+  }
+
+  const checkpointItems = await CheckpointItem.findAll({
+    where: { checkpoint_id: checkpointId },
+    order: [['sequence_number', 'ASC']],
+  });
+
+  const itemEntities = await Promise.all(
+    checkpointItems.map(async (checkpointItem) => {
+      const { entity } = await getCheckpointItemEntity(checkpointItem.id, { checkpointItem });
+      return entity;
+    })
+  );
+
+  return itemEntities;
 };
 
 module.exports = {
   createCheckpointItem,
+  getCourseCheckpointItems,
 }

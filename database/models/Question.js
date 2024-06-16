@@ -29,6 +29,16 @@ Question.init(
         this.setDataValue("meta", JSON.stringify(value));
       },
     },
+    raw_ai_response: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      get: function () {
+        return JSON.parse(this.getDataValue("raw_ai_response"));
+      },
+      set: function (value) {
+        this.setDataValue("raw_ai_response", JSON.stringify(value));
+      },
+    },
   },
   {sequelize},
 );

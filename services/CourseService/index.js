@@ -1,5 +1,14 @@
-const {Checkpoint, Course} = require("../../database/models");
-const { CheckpointStatuses, CourseStatuses, CheckpointTypes} = require("../../database/constants");
+const {Checkpoint, Course, Question, Content, Answer, CheckpointItem} = require("../../database/models");
+const { CheckpointStatuses, CourseStatuses, CheckpointTypes, CheckpointItemTypes} = require("../../database/constants");
+
+const CheckpointItemModelMap = {
+  [CheckpointItemTypes.QUESTION]: Question,
+  [CheckpointItemTypes.CONTENT]: Content,
+};
+
+const CheckpointItemModelIncludeMap = {
+  [CheckpointItemTypes.QUESTION]: [Answer],
+};
 
 class CourseService {
   constructor(studentId, config = {}) {
@@ -41,6 +50,110 @@ class CourseService {
     });
 
     return course;
+  }
+
+ async createCheckpointItem(checkpointId, itemType, itemPayload) {
+  const checkpoint = await Checkpoint.findOne({ where: { id: checkpointId }, include: ["CheckpointItems"] });
+
+  console.log('checkpoint', checkpoint);
+  if (!checkpoint) {
+    throw new Error(`Checkpoint with ID ${checkpointId} not found.`);
+  }
+
+  const ItemModel = CheckpointItemModelMap[itemType];
+
+  if (!ItemModel) {
+    throw new Error(`Invalid item type: ${itemType}`);
+  }
+
+  const item = await ItemModel.create(itemPayload);
+  const sequenceNumber = checkpoint.CheckpointItems.length + 1;
+
+  console.log('item', item);
+  console.log('sequenceNumber', sequenceNumber);
+
+  const checkpointItem = await CheckpointItem.create({
+    checkpoint_id: checkpointId,
+    sequence_number: sequenceNumber,
+    entity_type: itemType,
+    entity_id: item.id,
+  });
+
+  return { checkpointItem, entity: item };
+};
+
+async getCheckpointItemEntity(checkpointItemId, { checkpointItem: providedCheckpointItem } = {}) {
+  const checkpointItem = providedCheckpointItem || await CheckpointItem.findOne({
+    where: { id: checkpointItemId },
+  });
+
+  if (!checkpointItem) {
+    throw new Error(`CheckpointItem with ID ${checkpointItemId} not found.`);
+  }
+
+  const { entity_type, entity_id } = checkpointItem;
+
+  const ItemModel = CheckpointItemModelMap[entity_type];
+  const itemIncludes = CheckpointItemModelIncludeMap[entity_type] || [];
+
+  if (!ItemModel) {
+    throw new Error(`Invalid entity type: ${entity_type}`);
+  }
+
+  const entity = await ItemModel.findOne({
+    where: { id: entity_id },
+    include: itemIncludes,
+    attributes: { exclude: ['raw_ai_response'] }
+  });
+
+  if (!entity) {
+    throw new Error(`Entity with ID ${entity_id} not found for entity type ${entity_type}.`);
+  }
+
+  return {
+    checkpointItem,
+    entity: {
+      ...(entity.toJSON()),
+      entity_type: entity_type,
+    },
+  };
+};
+
+  async getCourseCheckpointItems(courseId, checkpointId) {
+    const course = await Course.findOne({ where: { id: courseId, student_id: this.studentId } });
+
+    if (!course) {
+      throw new Error(`Course with ID ${courseId} not found.`);
+    }
+
+    const checkpointItems = await CheckpointItem.findAll({
+      where: { checkpoint_id: checkpointId },
+      order: [['sequence_number', 'ASC']],
+    });
+
+    const itemEntities = await Promise.all(
+      checkpointItems.map(async (checkpointItem) => {
+        const { entity } = await this.getCheckpointItemEntity(checkpointItem.id, { checkpointItem });
+        return entity;
+      })
+    );
+
+    return itemEntities;
+  }
+
+  async getCourseOnboardingQuestions(courseId) {
+    const courseOnboardingCheckpoint = await Checkpoint.findOne({
+      where: { parent_id: courseId, checkpoint_type: CheckpointTypes.ONBOARDING },
+    });
+
+    if (!courseOnboardingCheckpoint) {
+      throw new Error(`Onboarding checkpoint not found for course with ID ${courseId}.`);
+    }
+
+    const checkpointItems = await this.getCourseCheckpointItems(courseId, courseOnboardingCheckpoint.dataValues.id);
+    const questions = checkpointItems.filter((entity) => entity.entity_type === CheckpointItemTypes.QUESTION);
+
+    return questions;
   }
 }
 

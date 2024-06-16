@@ -14,6 +14,8 @@ const handleSocket = (socket) => {
     const response = await onboardingService.askOnboardingQuestion();
 
     console.log('response', response);
+
+    socket.emit('onboarding_question', response);
   });
 
   socket.on("disconnect", () => {

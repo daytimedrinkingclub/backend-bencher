@@ -12,7 +12,6 @@ const authenticateJWT = async (req, res, next) => {
   }
 
   const authHeader = req.headers.authorization;
-  console.log('auth', authHeader);
 
   if (authHeader) {
     const token = authHeader.split(" ")[1];

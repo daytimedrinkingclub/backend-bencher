@@ -14,13 +14,27 @@ router.post("/", async (req, res) => {
 router.get("/:course_id", async (req, res) => {
   const { course_id } = req.params;
   const { student_id } = req.student;
-  console.log('student_id', student_id);
-  console.log('course_id', course_id);
+
   const service = new CourseService(student_id);
   const course = await service.getCourse(course_id);
 
   if (course) {
     return res.json(course);
+  }
+
+  return res.sendStatus(404);
+});
+
+router.get("/:course_id/onboarding_questions", async (req, res) => {
+  const { course_id } = req.params;
+  const { student_id } = req.student;
+
+  const service = new CourseService(student_id);
+  const course = await service.getCourse(course_id);
+
+  if (course) {
+    const questions = await service.getCourseOnboardingQuestions(course_id);
+    return res.json(questions);
   }
 
   return res.sendStatus(404);

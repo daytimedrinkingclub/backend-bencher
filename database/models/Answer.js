@@ -19,6 +19,10 @@ Answer.init(
         key: 'id',
       },
     },
+    answer: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     ai_mcq_answer: {
       type: DataTypes.TEXT,
       allowNull: false,

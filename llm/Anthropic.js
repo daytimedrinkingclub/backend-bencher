@@ -16,6 +16,7 @@ class AnthropicLLM {
       temperature: 0,
       tools: tools
     });
+    console.log('LLM response: ', response);
 
     return response;
   }

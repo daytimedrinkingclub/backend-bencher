@@ -1,14 +1,33 @@
-const http = require('http');
+const socketIO = require("socket.io");
+const http = require("http");
+const { createAdapter } = require("@socket.io/postgres-adapter");
+const { Pool } = require("pg");
+const app = require('./routes');
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/html' });
+const server = http.createServer(app);
 
-  res.write('<h1>Hello, Node.js HTTP Server!</h1>');
-  res.end();
+const io = socketIO(server, {
+  cors: {
+    origin: "*",
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
+  },
 });
 
-const port = 3000;
+const pool = new Pool({ connectionString: process.env.DB_URL });
 
-server.listen(port, () => {
-  console.log(`Node.js HTTP server is running on port ${port}`);
-});
+pool.query(`
+  CREATE TABLE IF NOT EXISTS socket_io_attachments (
+      id          bigserial UNIQUE,
+      created_at  timestamptz DEFAULT NOW(),
+      payload     bytea
+  );
+`);
+
+io.adapter(createAdapter(pool));
+io.on("connection", require('./utils/socket'));
+
+const PORT = process.env.PORT || 3002;
+server.listen(PORT, async () => {
+  console.log("Backend started on port: " + PORT);
+})

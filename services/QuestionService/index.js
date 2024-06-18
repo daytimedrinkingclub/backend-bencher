@@ -1,5 +1,4 @@
 const {Answer, CheckpointItem, Checkpoint, Course, Question} = require("../../database/models");
-const {Sequelize} = require("sequelize");
 
 class QuestionService {
   constructor(studentId, questionId) {

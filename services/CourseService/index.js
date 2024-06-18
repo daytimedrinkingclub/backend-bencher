@@ -103,7 +103,7 @@ async getCheckpointItemEntity(checkpointItemId, { checkpointItem: providedCheckp
   const entity = await ItemModel.findOne({
     where: { id: entity_id },
     include: itemIncludes,
-    attributes: { exclude: ['raw_ai_response'] }
+    // attributes: { exclude: ['raw_ai_response'] }
   });
 
   if (!entity) {

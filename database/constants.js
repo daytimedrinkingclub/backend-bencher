@@ -3,7 +3,7 @@ const CourseQuestionInputTypes = {
   RADIO: "radio",
   CHECKBOX: "checkbox",
   SCALE: "scale",
-  DATE: "datetime",
+  DATE: "datepicker",
 }
 
 const CheckpointItemTypes = {

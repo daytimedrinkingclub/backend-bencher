@@ -29,7 +29,9 @@ class OnboardingService {
 
     checkpointItems.forEach((entity) => {
       const rawAiResponse = entity.raw_ai_response;
-      const toolUse = response.content[response.content.length - 1];
+      console.log('entity', entity);
+      console.log('rawAiResponse', rawAiResponse);
+      const toolUse = rawAiResponse.content[rawAiResponse.content.length - 1];
       if (entity.entity_type === CheckpointItemTypes.QUESTION) {
         messages.push({
           "role": "assistant",

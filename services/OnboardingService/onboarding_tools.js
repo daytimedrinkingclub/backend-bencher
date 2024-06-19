@@ -1,7 +1,7 @@
 module.exports = [
   {
     "name": "get_user_data",
-    "description": "Get the user data from the user, this includes the topics they want to learn, the duration they have, and the current skill level of the user",
+    "description": `Get the user data from the user, this includes the topics they want to learn, the duration they have, and the current skill level of the user. Today is ${new Date().toString()}`,
     "input_schema": {
       "type": "object",
       "properties": {

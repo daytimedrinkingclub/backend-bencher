@@ -32,8 +32,14 @@ Course.init(
       allowNull: false,
     },
     meta: {
-      type: DataTypes.JSON,
+      type: DataTypes.TEXT,
       allowNull: true,
+      get: function () {
+        return JSON.parse(this.getDataValue("meta"));
+      },
+      set: function (value) {
+        this.setDataValue("meta", JSON.stringify(value));
+      },
     },
   },
   { sequelize, modelName: "Course" },

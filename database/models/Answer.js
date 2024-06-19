@@ -21,7 +21,13 @@ Answer.init(
     },
     answer: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
+      get: function () {
+        return JSON.parse(this.getDataValue("answer"));
+      },
+      set: function (value) {
+        this.setDataValue("answer", JSON.stringify(value));
+      },
     },
     // ai_mcq_answer: {
     //   type: DataTypes.TEXT,

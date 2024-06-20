@@ -1,5 +1,5 @@
 const {sequelize, Model, DataTypes} = require("../db");
-const {CheckpointTypes, CheckpointStatuses} = require("../constants");
+const {CheckpointTypes, CheckpointStatuses, CheckpointParentTypes} = require("../constants");
 
 class Checkpoint extends Model {
 }
@@ -11,8 +11,20 @@ Checkpoint.init(
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
-    parent_type: {
+    name: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    course_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    parent_type: {
+      type: DataTypes.ENUM(Object.values(CheckpointParentTypes)),
       allowNull: false,
     },
     parent_id: {
@@ -24,13 +36,19 @@ Checkpoint.init(
       allowNull: false,
       defaultValue: CheckpointTypes.REGULAR,
     },
-    // checkpoint_details: {
-    //   type: DataTypes.TEXT,
-    //   allowNull: false,
-    // },
     checkpoint_number: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    meta: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      get: function () {
+        return JSON.parse(this.getDataValue("meta"));
+      },
+      set: function (value) {
+        this.setDataValue("meta", JSON.stringify(value));
+      },
     },
     checkpoint_status: {
       type: DataTypes.ENUM(Object.values(CheckpointStatuses)),

@@ -16,6 +16,31 @@ class CourseService {
     this.config = config;
   }
 
+  async createCourseCheckpoint(courseId, {
+    parentType = "Course",
+    parentId,
+    name,
+    description,
+    checkpointNumber,
+    checkpointType = CheckpointTypes.REGULAR,
+    checkpointStatus = CheckpointStatuses.LOCKED,
+    meta = {},
+  }) {
+    const checkpoint = await Checkpoint.create({
+      course_id: courseId,
+      parent_id: parentId,
+      parent_type: parentType,
+      name,
+      checkpoint_type: checkpointType,
+      description,
+      checkpoint_number: checkpointNumber,
+      checkpoint_status: checkpointStatus,
+      meta,
+    });
+
+    return checkpoint;
+  }
+
   async createCourse(query) {
     this.query = query;
     const course = await Course.create({
@@ -25,6 +50,7 @@ class CourseService {
     });
 
     await Checkpoint.create({
+      course_id: course.id,
       parent_id: course.id,
       parent_type: "Course",
       name: "Onboarding",
@@ -50,6 +76,21 @@ class CourseService {
     });
 
     return course;
+  }
+
+  async getOnboardingCheckpoint(courseId) {
+    const course = await this.getCourse(courseId);
+
+    if (!course) {
+      throw new Error(`Course with ID ${courseId} not found.`);
+    }
+
+    const onboardingCheckpoint = await Checkpoint.findOne({
+      where: { parent_id: courseId, checkpoint_type: CheckpointTypes.ONBOARDING },
+    });
+
+    return onboardingCheckpoint;
+
   }
 
  async createCheckpointItem(checkpointId, itemType, itemPayload) {

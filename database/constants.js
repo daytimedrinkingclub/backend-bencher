@@ -30,6 +30,11 @@ const CheckpointTypes = {
   REGULAR: "regular",
 };
 
+const CheckpointParentTypes = {
+  COURSE: "Course",
+  CHECKPOINT: "Checkpoint",
+}
+
 const CheckpointStatuses = {
   LOCKED: "locked",
   UNLOCKED: "unlocked",
@@ -43,4 +48,5 @@ module.exports = {
   CourseStatuses,
   CheckpointTypes,
   CheckpointStatuses,
+  CheckpointParentTypes,
 };

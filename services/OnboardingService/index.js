@@ -23,7 +23,7 @@ class OnboardingService {
     // return;
     const messages = [
       { "role": "user", "content": "Hi, I want to learn something, but I am not able to figure out where to begin, or even what to actually learn, can you help me figure out what I should learn?" },
-      { "role": "assistant", "content": "Sure, I will assist you. Please tell me what you want to learn, and I will ask you some follow-up questions on by one to help you figure this out." },
+      { "role": "assistant" , "content": "Sure, I will assist you. Please tell me what you want to learn, and I will ask you some follow-up questions ONE by ONE to help you figure this out." },
       { "role": "user", "content": this.input_query }
     ];
 
@@ -83,6 +83,7 @@ class OnboardingService {
         return {
           success: true,
           onboardingComplete: true,
+          coursePlanConfig: toolInput,
         }
       }
     }
